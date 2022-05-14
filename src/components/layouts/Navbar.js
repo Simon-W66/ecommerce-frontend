@@ -10,16 +10,12 @@ import {AiOutlineClose} from "react-icons/ai"
 const Nav = () => {
   let Links = [
     { name: "HOME", link: "/" },
-    { name: "SERVICE", link: "/" },
-    { name: "ABOUT", link: "/" },
-    { name: "BLOG'S", link: "/" },
-    { name: "CONTACT", link: "/" }
+    { name: "Market", link: "/market" },
+    { name: "Blog", link: "/blog" },
   ];
   const [active,setActive] = useState(false)
 
-    const showMenu = () => {
-        setActive(!active)
-    }
+    
   
   const [isSideMenuOpen, setisSideMenuOpen] = useState(false)
 
@@ -28,16 +24,23 @@ const Nav = () => {
     }
 
     return (
-        <div className="fixed w-full h-8 bg-blue-400 text-gray-200 flex flex-row justify-between items-center">
-            <div className="brand-logo text-sm font-bold px-2">rhombus</div>
-            <ul className="hidden menu-list lg:flex lg:flex-row text-xs font-bold">
-                <li className="menu-list-item px-2"><a href="#">Home</a></li>
-                <li className="menu-list-item px-2"><a href="#">Profile</a></li>
-                <li className="menu-list-item px-2"><a href="#">Settings</a></li>
+        <div className="fixed w-full h-14 bg-yellow-500 text-gray-100 flex flex-row justify-between items-center shadow-md ">
+            <div className="brand-logo text-lg font-bold px-2">Ecommerce</div>
+            <ul className="hidden menu-list lg:flex lg:flex-row text-xs font-bold px-6 ">
+                {Links.map((link) => (
+                  <li key={link.name} className="md:ml-8 text-2xl md:my-0 my-7">
+                    <a
+                      href={link.link}
+                      className="text-gray-100 hover:text-black font-mono"
+                    >
+                      {link.name.toUpperCase()}
+                    </a>
+                  </li>
+                ))}
             </ul>
             
             <button onClick={()=>{showSideMenu()}} className="lg:hidden menu-button">
-                {(isSideMenuOpen) ? <AiOutlineClose className="w-8 h-8 px-2"/> : <GiHamburgerMenu  className="w-8 h-8 px-2" />}
+                {(isSideMenuOpen) ? <AiOutlineClose className="w-12 h-12 p-1"/> : <GiHamburgerMenu  className="w-12 h-12 p-1" />}
             </button>
             {(isSideMenuOpen) ? SideMenu() : ''}
         </div>
@@ -47,12 +50,25 @@ const Nav = () => {
 }
 
 function SideMenu(){
+    let Links = [
+    { name: "HOME", link: "/" },
+    { name: "Market", link: "/market" },
+    { name: "Blog", link: "/blog" },
+    
+  ];
     return(
-        <div className="fixed h-1/3 w-full sm:w-1/4 lg:hidden bg-blue-500 top-8">
-            <ul className="menu-list flex flex-col text-xs font-bold">
-                <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700"><a href="#">Home</a></li>
-                <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700"><a href="#">Profile</a></li>
-                <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700"><a href="#">Settings</a></li>
+        <div className="fixed h-auto py-4 w-full sm:w-2/4 lg:hidden bg-yellow-500 opacity-50 top-14  ">
+            <ul className="menu-list flex flex-col text-medium font-bold text-center ">
+                {Links.map((link) => (
+                  <li key={link.name} className="md:ml-8 text-xl md:my-0 my-2 opacity-100">
+                    <a
+                      href={link.link}
+                      className="text-gray-100 hover:text-black font-mono"
+                    >
+                      {link.name.toUpperCase()}
+                    </a>
+                  </li>
+                ))}
             </ul>
         </div>
     )
