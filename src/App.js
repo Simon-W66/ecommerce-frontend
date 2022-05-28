@@ -3,6 +3,7 @@ import {Routes, Route, BrowserRouter as Router, Link} from "react-router-dom"
 import Register from './components/auth/Register'
 import HomePage from './pages/Home.page';
 import Nav from "./components/layouts/Navbar"
+import Login from "./components/auth/Login"
 import axios from 'axios';
 
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -16,7 +17,8 @@ function App() {
         <Nav/>
       <Routes>
           <Route path='/' element={<HomePage/>}/>
-          <Route path='register' element={<Register/>}/>      
+          <Route path='register' element={<Register/>}/>   
+          <Route path='login' element={<Login/>}/>   
       </Routes>
     </Router>
   );

@@ -2,6 +2,7 @@
 
 import React, {useState} from 'react';
 import axios from 'axios';
+import Link from "react-router-dom"
 const Register = () => {
     const [ registerInput, setRegister] = useState({
         name: '',
@@ -114,9 +115,9 @@ const Register = () => {
 
                 <div className="text-grey-dark mt-6">
                     Already have an account? 
-                    <a className="no-underline border-b border-blue text-blue" href="../login/">
+                    <Link to="/login" className="no-underline border-b border-blue text-blue" href="../login/">
                         Log in
-                    </a>.
+                    </Link>
                 </div>
             </div>
         </div>
