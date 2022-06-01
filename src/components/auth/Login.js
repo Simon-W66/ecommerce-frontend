@@ -1,81 +1,71 @@
-//popup
-
-// separated page for Register
-
 import React, {useState} from 'react';
 import axios from 'axios';
-import Link from "react-router-dom"
+import {Link} from "react-router-dom"
+
 const Register = () => {
-    const [ registerInput, setRegister] = useState({
+    const [ loginInput, setLogin] = useState({
         name: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        phone: '',
         error_list: []
     })
-    
     const handleInput = (e) => {
         e.persist();
-        setRegister({...registerInput, [e.target.name]: e.target.value})
+        setLogin({...loginInput, [e.target.name]: e.target.value})
     }
-    const registerSubmit = (e) => {
+    const loginSubmit = (e) => {
         e.preventDefault();
         
         const data = {
-            name: registerInput.name,
-            email: registerInput.email,
-            password: registerInput.password,
-            passwordConfirm: registerInput.passwordConfirm,
-            phone: registerInput.phone,
+            name: loginInput.name,
+            email: loginInput.email, //HOW to check if input is name or email :D ? 
+            password: loginInput.password,
         }
         axios.get('/sanctum/csrf-cookie').then(response=>{
-            axios.post('/api/register', data).then(res=> {
+            axios.post('/api/login', data).then(res=> {
                 if(res.data.status === 200){
                    localStorage.setItem('auth_token', res.data.token); 
                    localStorage.setItem('auth_name', res.data.username); 
                 }
                 else{
-                    setRegister({...registerInput,error_list: res.data.validation_errors})
+                    setLogin({...loginInput,error_list: res.data.validation_errors})
                 }
             });
         })
     }
-
-    
-    
-
     return ( 
         <div className="bg-grey-lighter min-h-screen flex flex-col">
             <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-                    <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-                    <form action="" onSubmit={registerSubmit}>
+                    <h1 className="mb-8 text-3xl text-center">Sign in</h1>
+                    <form action="" onSubmit={loginSubmit}>
                         <input 
                             type="text"
                             className="block border border-grey-light w-full p-3 rounded mb-0 mt-4"
                             name="name"
                             placeholder="Full Name or Email"
+                            value={loginInput.name}
                             onChange={handleInput}
-                            value={registerInput.name}
                             />
-                        <span className='text-red-500 text-base bg-red-100'>{registerInput.error_list.name}</span>
+                        <span className='text-red-500 text-base bg-red-100'>{loginInput.error_list.name}</span>
                         <input
                             type="password"
                             name="password"
                             className='block border border-grey-light w-full p-3 rounded mb-0 mt-4'
                             placeholder='Enter Password'
                             onChange={handleInput}
-                            value={registerInput.password}
+                            value={loginInput.password}
                             />
-                        <span className='text-red-500 text-base bg-red-100'>{registerInput.error_list.password}</span>
+                        <span className='text-red-500 text-base bg-red-100'>{loginInput.error_list.password}</span>
+                        <div className='mx-2 my-1 '>
+                            <input type="checkbox" name="remember_me" id="remember_me" />
+                            <span className='mx-2 text-md text-gray-500'>Remember me</span>
+                        </div>
                         <button
                             type="submit"
                             className="w-full text-center py-3 rounded text-white text-lg font-mono bg-yellow-500 hover:text-gray-200 focus:outline-none my-1"
-                        >Create Account</button>
+                        >Sign in</button>
                     </form>
-                    
-
                     <div className="text-center text-sm text-grey-dark mt-4">
                         By signing up, you agree to the 
                         <a className="no-underline border-b border-grey-dark text-grey-dark" href="#">
@@ -86,10 +76,9 @@ const Register = () => {
                         </a>
                     </div>
                 </div>
-
-                <div className="text-grey-dark mt-6">
+                <div className="text-grey-dark mt-6 ">
                     Already have an account? 
-                    <Link to="/register" className="no-underline border-b border-blue text-blue" href="../login/">
+                    <Link to="/register" className="no-underline border-b border-blue text-blue mx-1" href="../login/">
                         Register in
                     </Link>
                 </div>
