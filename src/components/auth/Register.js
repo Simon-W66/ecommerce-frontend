@@ -5,7 +5,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Link, useNavigate} from "react-router-dom"
-
+import Swal from 'sweetalert2';
 const Register = () => {
     const navigate = useNavigate();
     const [ registerInput, setRegister] = useState({
@@ -20,7 +20,7 @@ const Register = () => {
     const handleInput = (e) => {
         e.persist();
         setRegister({...registerInput, [e.target.name]: e.target.value})
-        const name = e.target.name
+        
     }
     const registerSubmit = (e) => {
         e.preventDefault();
@@ -29,7 +29,7 @@ const Register = () => {
             name: registerInput.name,
             email: registerInput.email,
             password: registerInput.password,
-            passwordConfirm: registerInput.passwordConfirm,
+            confirmPassword: registerInput.confirmPassword,
             phone: registerInput.phone,
         }
         axios.get('/sanctum/csrf-cookie').then(response=>{
@@ -38,8 +38,13 @@ const Register = () => {
                    localStorage.setItem('auth_token', res.data.token); 
                    localStorage.setItem('auth_name', res.data.username); 
 
-                   navigate('/')//redirect
-                   //toastify -> "success and "Registered successfully! " "
+                   navigate('/'); 
+                   Swal.fire({
+                        icon:'success',
+                        text: res.data.message,
+                        position: 'top-end',
+                        timer: 1000
+                   })
                 }
                 else{
                     setRegister({...registerInput,error_list: res.data.validation_errors})
@@ -49,10 +54,10 @@ const Register = () => {
         })
     }
 
-    
-    
+
 
     return ( 
+        
         <div className="bg-grey-lighter min-h-screen flex flex-col">
             <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
@@ -88,13 +93,13 @@ const Register = () => {
                         <span className='text-red-500 text-base bg-red-100'>{registerInput.error_list.password}</span>
                         <input
                             type="password"
-                            name="passwordConfirm"
+                            name="confirmPassword"
                             className='block border border-grey-light w-full p-3 rounded mb-0 mt-4'
                             placeholder='Confirm your Password'
                             onChange={handleInput}
-                            value={registerInput.passwordConfirm}
+                            value={registerInput.confirmPassword}
                             />
-                        <span className='text-red-500 text-base bg-red-100'>{registerInput.error_list.passwordConfirm}</span>
+                        <span className='text-red-500 text-base bg-red-100'>{registerInput.error_list.confirmPassword}</span>
                         <input 
                             type="tel"
                             className="block border border-grey-light w-full p-3 rounded mb-4 mt-4"
