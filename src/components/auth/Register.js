@@ -1,9 +1,13 @@
 // separated page for Register
 
+
+//oddzigalo mi react.js, som runnol npm audit fix --force a kkt konec, hluposti pise, treba stiahnut to z githubu a prehodit login aj Register
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
+
 const Register = () => {
+    const navigate = useNavigate();
     const [ registerInput, setRegister] = useState({
         name: '',
         email: '',
@@ -11,11 +15,12 @@ const Register = () => {
         confirmPassword: '',
         phone: '',
         error_list: []
-    })
+    }    )
     
     const handleInput = (e) => {
         e.persist();
         setRegister({...registerInput, [e.target.name]: e.target.value})
+        const name = e.target.name
     }
     const registerSubmit = (e) => {
         e.preventDefault();
@@ -32,9 +37,13 @@ const Register = () => {
                 if(res.data.status === 200){
                    localStorage.setItem('auth_token', res.data.token); 
                    localStorage.setItem('auth_name', res.data.username); 
+
+                   navigate('/')//redirect
+                   //toastify -> "success and "Registered successfully! " "
                 }
                 else{
                     setRegister({...registerInput,error_list: res.data.validation_errors})
+                    //toastify -> "warning and "Incorrect credentials!" "
                 }
             });
         })
@@ -81,15 +90,15 @@ const Register = () => {
                             type="password"
                             name="passwordConfirm"
                             className='block border border-grey-light w-full p-3 rounded mb-0 mt-4'
-                            placeholder='Enter Confirm Password'
+                            placeholder='Confirm your Password'
                             onChange={handleInput}
                             value={registerInput.passwordConfirm}
                             />
                         <span className='text-red-500 text-base bg-red-100'>{registerInput.error_list.passwordConfirm}</span>
                         <input 
-                            type="password"
+                            type="tel"
                             className="block border border-grey-light w-full p-3 rounded mb-4 mt-4"
-                            name="confirm_password"
+                            name="phone"
                             placeholder="Phone number"
                             onChange={handleInput}
                             value={registerInput.phone}

@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom"
-
+import {Link, useNavigate} from "react-router-dom";
+import Swal from 'sweetalert2'
 const Register = () => {
+    
+    const navigate = useNavigate()
     const [ loginInput, setLogin] = useState({
-        name: '',
+        //name: '',
         email: '',
         password: '',
         error_list: []
@@ -17,8 +19,8 @@ const Register = () => {
         e.preventDefault();
         
         const data = {
-            name: loginInput.name,
-            email: loginInput.email, //HOW to check if input is name or email :D ? 
+            
+            email: loginInput.email, 
             password: loginInput.password,
         }
         axios.get('/sanctum/csrf-cookie').then(response=>{
@@ -26,28 +28,44 @@ const Register = () => {
                 if(res.data.status === 200){
                    localStorage.setItem('auth_token', res.data.token); 
                    localStorage.setItem('auth_name', res.data.username); 
+                   navigate('/'); 
+                   Swal.fire({
+                        icon:'success',
+                        text: res.data.message,
+                        position: 'top-end',
+                        timer: 1000
+                   })
+                }
+                else if(res.data.status === 401){
+                    Swal.fire({
+                        icon: 'error',
+                        text: res.data.message,
+                        position: 'top-end',
+                        timer: 1200
+                    })
                 }
                 else{
-                    setLogin({...loginInput,error_list: res.data.validation_errors})
+                    setLogin({...loginInput,error_list: res.data.validation_errors}) 
                 }
             });
         })
     }
     return ( 
         <div className="bg-grey-lighter min-h-screen flex flex-col">
+
             <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                     <h1 className="mb-8 text-3xl text-center">Sign in</h1>
                     <form action="" onSubmit={loginSubmit}>
-                        <input 
+                       <input 
                             type="text"
                             className="block border border-grey-light w-full p-3 rounded mb-0 mt-4"
-                            name="name"
-                            placeholder="Full Name or Email"
-                            value={loginInput.name}
+                            name="email"
+                            placeholder="Email"
                             onChange={handleInput}
+                            value={loginInput.email}
                             />
-                        <span className='text-red-500 text-base bg-red-100'>{loginInput.error_list.name}</span>
+                        <span className='text-red-500 text-base bg-red-100'>{loginInput.error_list.email}</span>
                         <input
                             type="password"
                             name="password"
