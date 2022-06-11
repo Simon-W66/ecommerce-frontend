@@ -21,26 +21,7 @@ const Nav = () => {
     const showSideMenu = () => {
       (isSideMenuOpen) ? setisSideMenuOpen(false) : setisSideMenuOpen(true)
     }
-    const logoutSubmit = (e) => {
-      e.preventDefault();
-      console.log('hello')
-      //axios.post(`/api/logout`).then(res=>{
-      //  if(res.data.status === 200){
-      //    localStorage.setItem('auth_token', res.data.token); 
-      //    localStorage.setItem('auth_name', res.data.username); 
-      //    navigate('/'); 
-      //    
-      //    Swal.fire({
-      //        icon:'success',
-      //        text: res.data.message,
-      //        position: 'top-end',
-      //        timer: 1000
-      //      })
-      //  }else{
-//
-      //  }
-      //})
-    }
+    
     return (
         <div className="fixed w-full h-14 bg-yellow-500 text-gray-100 flex flex-row justify-between items-center shadow-md ">
             <div className="brand-logo text-lg font-bold px-2">Ecommerce</div>
@@ -55,7 +36,7 @@ const Nav = () => {
                     </a>
                   </li>
                 ))}
-                {(!localStorage.getItem("auth_token")) ? <LoginCred/> : <Dropdown logout={logoutSubmit}/>}
+                {(!localStorage.getItem("auth_token")) ? <LoginCred/> : <Dropdown />}
             </ul>
             
 
