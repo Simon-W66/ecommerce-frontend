@@ -27,22 +27,15 @@ export class Dropdown extends React.Component {
 	}
 
 	render() {
-		const navigate = useNavigate();
 
-	let Links = [
-        { name: "account", link: "/" },
-        { name: "products", link: "/products" },
-        { name: "messages", link: "/messages" },
-        { name: "logout", link: "/logout" },
-      ];
+	
 	const logoutSubmit = (e) => {
     	e.preventDefault();
-    	console.log('hello')
-    	axios.post(`/api/logout`).then(res=>{
+    	axios.post('/api/logout').then(res=>{
     	  if(res.data.status === 200){
-    	    localStorage.setItem('auth_token', res.data.token); 
-    	    localStorage.setItem('auth_name', res.data.username); 
-    	    navigate('/'); 
+    	    localStorage.removeItem('auth_token', res.data.token); 
+    	    localStorage.removeItem('auth_name', res.data.username); 
+    	    window.location = "/";
     	    
     	    Swal.fire({
     	        icon:'success',
@@ -51,9 +44,17 @@ export class Dropdown extends React.Component {
     	        timer: 1000
     	      })
     	  }else{
+
     	  }
     	})
 	} 
+
+	let Links = [
+        { key: '1wet4w4wetb5',name: "account", link: "/" },
+        { key: '2wge54gh64rh',name: "products", link: "/products" },
+        { key: '3rhe56j7thbb',name: "messages", link: "/messages" },
+        
+      ];
     return (
 		<div className={this.state.parentClass}>
 			<div className="relative">
@@ -87,15 +88,12 @@ export class Dropdown extends React.Component {
 						)
 					}
 				>
-					
-				{Links.map((link)=> (
-                    <div>
-                        <Link href="#" key={link.name} className="block px-4 py-2 text-gray-800 hover:bg-yellow-500 hover:text-white" to='/'>{link.name.toUpperCase()}</Link>
-                        <Link href="#" key={link.name} className="block px-4 py-2 text-gray-800 hover:bg-yellow-500 hover:text-white" to='/products'>{link.name.toUpperCase()}</Link>
-                        <Link href="#" key={link.name} className="block px-4 py-2 text-gray-800 hover:bg-yellow-500 hover:text-white" to='/messages'>{link.name.toUpperCase()}</Link>
-						<Link href="#" key={link.name} className="block px-4 py-2 text-gray-800 hover:bg-yellow-500 hover:text-white" to='/logout' >{link.name.toUpperCase()}</Link>
-                    </div>
-                ))}
+					<ul>
+						{Links.map((link)=> (
+								<Link href="#" key={link.key.toString()} className="block px-4 py-2 text-gray-800 hover:bg-yellow-500 hover:text-white" to={link.link}  >{link.name.toUpperCase()}</Link>
+						))}
+						<Link href="#" key="55" className="block px-4 py-2 text-gray-800 hover:bg-yellow-500 hover:text-white" to='/logout' onClick={logoutSubmit}>LOGOUT</Link>
+					</ul>	
 				</div>
 			</div>
 		</div>
